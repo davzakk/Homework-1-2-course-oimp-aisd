@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define int long long
+using namespace std;
+vector<int> pow2 = {1};
+
+int f(int x) {
+    int i = 0;
+    while (pow2[i] <= x + i) i++;
+    return i;
+}
+
+signed main() {
+    for (int i = 0; i < 30; ++i) pow2.push_back(pow2.back() * 2);
+    string s;
+    vector<int> s_ans;
+    cin >> s;
+    s = '$' + s;
+    s_ans.assign(s.size() + 1, 9);
+    vector<int> count(s.size(), 0);
+    int ans = 0;
+    for (auto i : pow2) {
+        int summ = 0;
+        for (int j = i; j < s.size(); j += 2 * i) {
+            for (int z = j; z < j + i; ++z) {
+                if (z < s.size()) {
+                    summ += s[z] - '0';
+                    //cout << s[z];
+                }
+            }
+        }
+        if (summ % 2) {
+            //cout << i << "\n";
+            ans += i;
+        }
+    }
+    if (s[ans] == '0') s[ans] = '1';
+    else if (s[ans] == '1') s[ans] = '0';
+    for (int i = 0, j = 1, z = 1; j < s.size(); ++j) {
+        if (pow2[i] == j) i++;
+        else {
+            s_ans[z] = s[j] - '0';
+            z++;
+        }
+    }
+    for (int i = 1; i < s_ans.size(); ++i) if (s_ans[i] != 9) cout << s_ans[i];
+
+}
